@@ -38,9 +38,14 @@ public class Main {
      * @return whether the string satisfies the password requirements
      */
     public static boolean checkForPassword(String str, int minLength) {
-        final boolean propertyOne = Pattern.matches("REPLACE WITH CORRECT REGEX", str);
+        if (str == null) return false;
+        final boolean containsNum = Pattern.matches(".*\\d.*", str);
+        final boolean containsUppercase = Pattern.matches(".*[A-Z].*", str);
+        final boolean containsLowercase = Pattern.matches(".*[a-z].*", str);
+        final boolean reqLength = str.length() >= minLength;
+
         // as needed, modify this code.
-        return propertyOne;
+        return containsNum && containsUppercase && containsLowercase && reqLength;
     }
 
     // Method 2 for checking if a string conforms to a regex: using Matcher.find
@@ -55,15 +60,16 @@ public class Main {
      * @return a list containing the email addresses in the string.
      */
     public static List<String> extractEmails(String str) {
-        final Pattern pattern = Pattern.compile("REPLACE WITH CORRECT REGEX");
-        final Matcher matcher = pattern.matcher(str);
         final List<String> result = new ArrayList<>();
+        if (str == null) return result;
+        final Pattern pattern = Pattern.compile("([^@\\s]+@(mail\\.)?utoronto\\.ca)");
+        final Matcher matcher = pattern.matcher(str);
         while (matcher.find()) {
-            result.add(matcher.group());
+            String extracted = matcher.group(1);
+            result.add(extracted);
         }
         return result;
     }
-
     // Method 3 for checking if a string conforms to a regex: using String.matches
 
     // TODO: Modify this method to check whether or not the string contains the same capital letter
@@ -76,6 +82,7 @@ public class Main {
      * @return whether str contains the same capital letter twice.
      */
     public static boolean checkForDoubles(String str) {
-        return str.matches("replace with correct regex");
+        if (str == null) return false;
+        return str.matches(".*([A-Z]).*\\1.*");
     }
 }
